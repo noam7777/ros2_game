@@ -8,6 +8,7 @@
 
 # Ignore temporary files
 *.tmp
+*.csv
 
 # Ignore IDE and editor-specific files
 .vscode/
