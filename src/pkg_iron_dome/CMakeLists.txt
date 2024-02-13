@@ -12,12 +12,12 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(node_physics src/node_physics.cpp
+add_executable(node_game src/node_game.cpp
                             src/physics.cpp
                             src/cannon.cpp
                             src/game.cpp
                             src/kinematics.cpp
-                            src/node_physics.cpp
+                            src/node_game.cpp
                             src/pitcher.cpp
                             src/rocket.cpp
                             src/entity.cpp
@@ -27,20 +27,20 @@ add_executable(node_physics src/node_physics.cpp
                             src/plate.cpp
                             src/trajectory.cpp
 )
-target_include_directories(node_physics PUBLIC
+target_include_directories(node_game PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-  target_link_libraries(node_physics
+  target_link_libraries(node_game
     pthread
     sfml-graphics
     sfml-window
     sfml-system
 )
 
-target_compile_features(node_physics PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(node_game PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS node_physics
+install(TARGETS node_game
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

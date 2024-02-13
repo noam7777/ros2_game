@@ -10,7 +10,6 @@ Rocket::Rocket(State targetPlateCurrentState, Eigen::Vector2f cannonCurrentPos) 
 
     width   = 3;
     height  = 3;
-    bool release = true;
 }
 
 //============================================================================//
@@ -34,7 +33,6 @@ Eigen::Vector2f Rocket::calcReleaseVelocity(State p, Eigen::Vector2f cannonCurre
 
     Eigen::Vector2f rocketInitialVel = {(velocityMagnitude * cos(CANNON_ANGLE_RAD)),
                                  (velocityMagnitude * sin(CANNON_ANGLE_RAD))};
-    bool debugLaunch = true;
 
     return rocketInitialVel;
 }

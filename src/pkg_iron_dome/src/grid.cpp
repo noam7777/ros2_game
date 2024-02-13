@@ -95,7 +95,6 @@ void Grid::destroyDeadEntities()
 
 bool Grid::intersects(std::shared_ptr<Entity> first, std::shared_ptr<Entity> second)
 {
-    BoundingBox firstBoundingBox = first->boundingBox();
     // Check for overlap along the x-axis
     bool xOverlap = (first->boundingBox().p1.x() < second->boundingBox().p2.x()) && (first->boundingBox().p2.x() > second->boundingBox().p1.x());
 

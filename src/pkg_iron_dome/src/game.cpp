@@ -89,11 +89,13 @@ sf::Event event;
                         std::cout << "the right key was released" << std::endl;
                         grid.getCannon()->cmdVel.x() = 0;
                     }
+                    break;
 
                 case sf::Event::MouseButtonPressed:
                     if(event.mouseButton.button == sf::Mouse::Button::Left) {
                         isShotFired = true;
                     }
+                    break;
 
                 // we don't process other types of events
                 default:
@@ -156,7 +158,6 @@ void Game::renderManager()
 
     while (gameIsActive)
     {
-        float dtRender = std::chrono::duration<float>(std::chrono::steady_clock::now() - lastTimeRefreshed).count();
 
         if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastTimeRefreshed).count() >= RENDER_STEP_SIZE_MS)
         {
