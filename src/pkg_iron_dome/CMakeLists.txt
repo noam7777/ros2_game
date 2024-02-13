@@ -7,6 +7,8 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -30,6 +32,8 @@ add_executable(node_game src/node_game.cpp
 target_include_directories(node_game PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+
+  ament_target_dependencies(node_game rclcpp std_msgs)
 
   target_link_libraries(node_game
     pthread

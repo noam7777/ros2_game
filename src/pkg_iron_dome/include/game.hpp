@@ -9,10 +9,12 @@
 #include "cannon.hpp"
 #include "rocket.hpp"
 #include "missile.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 namespace iron_dome_game
 {
-struct Game
+struct Game : public rclcpp::Node
 {
     Game();
     ~Game();
@@ -49,6 +51,10 @@ private:
     std::thread physicsThread;
     std::thread renderThread;
     std::thread keyboardThread;
+
+    void timer_callback();
+    rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
 };
 
 }

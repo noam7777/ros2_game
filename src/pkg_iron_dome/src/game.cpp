@@ -5,6 +5,7 @@
 
 #include "game.hpp"
 
+
 //graphics
 #include <SFML/Graphics.hpp>
 
@@ -19,7 +20,7 @@ namespace iron_dome_game
 
     bool timeInitialized = false;
     
-Game::Game() 
+Game::Game() : Node("game_node")
 {
     grid.addGeneralEntity(std::make_shared<iron_dome_game::Pitcher>());
     grid.spawnCannon(std::make_shared<iron_dome_game::Cannon>());
@@ -27,6 +28,9 @@ Game::Game()
     window = new sf::RenderWindow(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "My window");
     window->setKeyRepeatEnabled(false);
 
+    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    timer_ = this->create_wall_timer(
+    std::chrono::milliseconds(500), std::bind(&Game::timer_callback, this));
 }
 
 //============================================================================//
@@ -268,4 +272,12 @@ void Game::spawnRocket(State plateCurrentState)
     grid.addRocket(std::make_shared<Rocket>(plateCurrentState, grid.getCannon()->pos()));
 
 }
+
+void Game::timer_callback()
+    {
+      auto message = std_msgs::msg::String();
+      message.data = "Hello, world!";
+      RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+      publisher_->publish(message);
+    }
 }
