@@ -15,5 +15,8 @@
   <export>
     <build_type>ament_cmake</build_type>
     <depend>rclcpp</depend>
-    <depend>std_msgs</depend>  </export>
+    <depend>std_msgs</depend>
+    <depend>example_interfaces</depend>
+
+</export>
 </package>

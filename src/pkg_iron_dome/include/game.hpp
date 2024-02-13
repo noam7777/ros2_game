@@ -11,7 +11,7 @@
 #include "missile.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-
+#include "example_interfaces/srv/add_two_ints.hpp"
 namespace iron_dome_game
 {
 struct Game : public rclcpp::Node
@@ -55,6 +55,15 @@ private:
     void timer_callback();
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+
+
+    rclcpp::Service<example_interfaces::srv::AddTwoInts>::SharedPtr startGameService;
+
+    void startGame(
+        const std::shared_ptr<rmw_request_id_t> request_header,
+        const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
+        const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response);
+
 };
 
 }

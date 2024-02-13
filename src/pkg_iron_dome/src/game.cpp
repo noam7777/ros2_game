@@ -28,6 +28,11 @@ Game::Game() : Node("game_node")
     window = new sf::RenderWindow(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "My window");
     window->setKeyRepeatEnabled(false);
 
+    startGameService = this->create_service<example_interfaces::srv::AddTwoInts>(
+                            "start_game_service", std::bind(&Game::startGame, this,
+                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
+
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     timer_ = this->create_wall_timer(
     std::chrono::milliseconds(500), std::bind(&Game::timer_callback, this));
@@ -280,4 +285,25 @@ void Game::timer_callback()
       RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
       publisher_->publish(message);
     }
+
+
+void Game::startGame(
+    const std::shared_ptr<rmw_request_id_t> request_header,
+    const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
+    const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)
+{
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "received service call number : [%ld]", (long int)request_header->sequence_number);
+    if (this->gameIsActive) {
+        response->sum = 1;
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "game is already running");
+    }
+    else {
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "starting a game of duration: [%ld]", (long int)request->a);
+        play();
+        response->sum = 1;
+    }
+
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->sum);
+}
+
 }

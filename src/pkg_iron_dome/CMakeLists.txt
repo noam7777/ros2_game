@@ -9,13 +9,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
+
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 add_executable(node_game src/node_game.cpp
-                            src/physics.cpp
                             src/cannon.cpp
                             src/game.cpp
                             src/kinematics.cpp
@@ -25,7 +26,6 @@ add_executable(node_game src/node_game.cpp
                             src/entity.cpp
                             src/grid.cpp
                             src/missile.cpp
-                            src/physics.cpp
                             src/plate.cpp
                             src/trajectory.cpp
 )
@@ -33,7 +33,7 @@ target_include_directories(node_game PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-  ament_target_dependencies(node_game rclcpp std_msgs)
+  ament_target_dependencies(node_game rclcpp std_msgs example_interfaces)
 
   target_link_libraries(node_game
     pthread
