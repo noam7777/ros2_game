@@ -29,6 +29,9 @@ struct Game : public rclcpp::Node
     void renderManager();
     void joinAllThreads(void);
     void signalHandler(int signal);
+    void closeGameSession();
+    void createInitialEntities();
+    void initialiseGameSession();
     Grid grid;
     sf::RenderWindow* window;
 
@@ -40,7 +43,7 @@ struct Game : public rclcpp::Node
     bool gameIsActive = false;
     
 
-    static constexpr const int GAME_RUN_TIME_SEC = 25.0f;
+    static constexpr const float GAME_RUN_TIME_SEC = 15.0f;
 
     // Statistics
     uint16_t platesFired = 0;
@@ -59,7 +62,7 @@ private:
 
     rclcpp::Service<example_interfaces::srv::AddTwoInts>::SharedPtr startGameService;
 
-    void startGame(
+    void startGameServiceCallback(
         const std::shared_ptr<rmw_request_id_t> request_header,
         const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
         const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response);

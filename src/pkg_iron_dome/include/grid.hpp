@@ -54,6 +54,9 @@ public:
 
 
     void destroyDeadEntities();
+    void deleteAllEntities();
+    bool allEntitiesAreDeleted();
+
 
     std::vector<std::shared_ptr<Plate>> getPlates() {return m_entities.plates;};
 

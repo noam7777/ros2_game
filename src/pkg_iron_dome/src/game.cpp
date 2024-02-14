@@ -22,14 +22,12 @@ namespace iron_dome_game
     
 Game::Game() : Node("game_node")
 {
-    grid.addGeneralEntity(std::make_shared<iron_dome_game::Pitcher>());
-    grid.spawnCannon(std::make_shared<iron_dome_game::Cannon>());
 
     window = new sf::RenderWindow(sf::VideoMode(WORLD_WIDTH, WORLD_HEIGHT), "My window");
     window->setKeyRepeatEnabled(false);
 
     startGameService = this->create_service<example_interfaces::srv::AddTwoInts>(
-                            "start_game_service", std::bind(&Game::startGame, this,
+                            "start_game_service", std::bind(&Game::startGameServiceCallback, this,
                             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
 
@@ -115,6 +113,7 @@ sf::Event event;
 }
 
 //============================================================================//
+
 void Game::physicsEngine() 
 {
     t0 = std::chrono::steady_clock::now();
@@ -144,6 +143,7 @@ void Game::physicsEngine()
             }
         }
     }
+    timeInitialized = false;
 }
 
 //============================================================================//
@@ -205,11 +205,40 @@ void Game::signalHandler(int signal) {
     // Exit the program
     exit(signal);
 }
+
+//============================================================================//
+void Game::closeGameSession()
+{
+    grid.deleteAllEntities();
+}
+
+//============================================================================//
+void Game::createInitialEntities()
+{
+    grid.addGeneralEntity(std::make_shared<iron_dome_game::Pitcher>());
+    grid.spawnCannon(std::make_shared<iron_dome_game::Cannon>());
+}
+
+//============================================================================//
+void Game::initialiseGameSession()
+{
+    if (grid.allEntitiesAreDeleted()) {
+        RCLCPP_INFO(this->get_logger(), "all entities are deleted, creating initial entities");
+        createInitialEntities();
+        shotsFired  = 0;
+        platesFired = 0;
+        gameIsActive = true;
+    }
+    else{
+        RCLCPP_INFO(this->get_logger(), "not all entities are deleted");
+    }
+}
+
 //============================================================================//
 
 void Game::play() 
 {
-    gameIsActive = true;
+    initialiseGameSession();
 
     this->keyboardThread = std::thread(&Game::keyboardListener, this);
     this->physicsThread = std::thread(&Game::physicsEngine, this);
@@ -257,6 +286,7 @@ void Game::play()
     }
 
     joinAllThreads();
+    closeGameSession();
     std::cout << "Game over. Total hits: " << grid.m_hits << ". Total shots fired: " << shotsFired << std::endl;
     std::cout << "Accuracy " << (float)grid.m_hits /  (float)shotsFired * 100.f << "%" << std::endl;
 }
@@ -280,14 +310,14 @@ void Game::spawnRocket(State plateCurrentState)
 
 void Game::timer_callback()
     {
-      auto message = std_msgs::msg::String();
-      message.data = "Hello, world!";
-      RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-      publisher_->publish(message);
+    //   auto message = std_msgs::msg::String();
+    //   message.data = "Hello, world!";
+    //   RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+    //   publisher_->publish(message);
     }
 
 
-void Game::startGame(
+void Game::startGameServiceCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
     const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
     const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)

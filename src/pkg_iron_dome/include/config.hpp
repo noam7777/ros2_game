@@ -17,14 +17,13 @@
 #define PITCHER_POSITION_Y   (50)//(0)
 #define PITCHER_ANGLE_DEG    (120)
 
-#define CANNON_POSITION_X   (10)
-#define CANNON_POSITION_Y   (5)
+#define CANNON_POSITION_X   (10.0f)
+#define CANNON_POSITION_Y   (5.0f)
 #define CANNON_ANGLE_RAD    (0.7f)
 
 #define CANNON_HEIGHT       (5)
 #define CANNON_WIDTH        (5)
-#define CANNON_BARREL_INIT_POSITION_X (CANNON_POSITION_X + (CANNON_WIDTH / 2))
-#define CANNON_BARREL_INIT_POSITION_Y (CANNON_POSITION_Y + (CANNON_HEIGHT))
+
 #define CANNON_ANGLE_RAD            (0.7f)
 
 #define MISSILE_INIT_VEL_X          (0.0f)

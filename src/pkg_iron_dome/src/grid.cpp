@@ -8,7 +8,10 @@
 
 namespace iron_dome_game
 {
+//============================================================================//
 
+
+//============================================================================//
 void Grid::addGeneralEntity(std::shared_ptr<Entity> entity) {
 
     m_entities.generalEntities.push_back(entity);
@@ -89,6 +92,41 @@ void Grid::destroyDeadEntities()
         }
     }
 
+}
+
+//============================================================================//
+void Grid::deleteAllEntities()
+{
+    for (auto it = this->m_entities.generalEntities.begin(); it != this->m_entities.generalEntities.end();) {
+            it = m_entities.generalEntities.erase(it);
+    }
+    for (auto it = this->m_entities.rockets.begin(); it != this->m_entities.rockets.end();) {
+            it = m_entities.rockets.erase(it);
+    }
+    for (auto it = this->m_entities.plates.begin(); it != this->m_entities.plates.end();) {
+            it = m_entities.plates.erase(it);
+    }
+    for (auto it = this->m_entities.missiles.begin(); it != this->m_entities.missiles.end();) {
+            it = m_entities.missiles.erase(it);
+    }
+
+    m_entities.cannon = nullptr;
+
+}
+
+//============================================================================//
+bool Grid::allEntitiesAreDeleted()
+{
+    if ((this->m_entities.generalEntities.size() != 0)
+        || (this->m_entities.cannon != nullptr)
+        || (this->m_entities.rockets.size() != 0)
+        || (this->m_entities.plates.size() != 0)
+        || (this->m_entities.missiles.size() != 0)) {
+
+            return false;
+        }
+
+    return true;
 }
 
 //============================================================================//
